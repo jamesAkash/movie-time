@@ -11,14 +11,16 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const query = "interstellar";
+  const [query, setQuery] = useState("");
+
+  const tempQuery = "bleach";
 
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
       try {
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`
+          `http://www.omdbapi.com/?apikey=${KEY}&s=${tempQuery}`
         );
         if (!res.ok) throw new Error("Something went wrong!!");
         const data = await res.json();
@@ -38,9 +40,8 @@ export default function App() {
   return (
     <>
       <Navbar>
-        <Search />
-
-        {movies && <NumResults movies={movies} />}
+        <Search query={query} setQuery={setQuery} />
+        <NumResults num={movies?.length || "0"} />
       </Navbar>
       <Main>
         <Box>
@@ -58,6 +59,18 @@ export default function App() {
     </>
   );
 }
+
+const Search = ({ query, setQuery }) => {
+  return (
+    <input
+      className="search"
+      type="text"
+      placeholder="Search movies..."
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}
+    />
+  );
+};
 
 const ErrorMessage = ({ message }) => {
   return (
@@ -180,19 +193,6 @@ const Navbar = ({ children }) => {
   );
 };
 
-const Search = () => {
-  const [query, setQuery] = useState("");
-  return (
-    <input
-      className="search"
-      type="text"
-      placeholder="Search movies..."
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-    />
-  );
-};
-
 const Logo = () => {
   return (
     <div className="logo">
@@ -202,10 +202,10 @@ const Logo = () => {
   );
 };
 
-const NumResults = ({ movies }) => {
+const NumResults = ({ num }) => {
   return (
     <p className="num-results">
-      Found <strong>{movies.length}</strong> results
+      Found <strong>{num}</strong> results
     </p>
   );
 };
