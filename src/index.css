@@ -50,8 +50,8 @@ body {
 }
 
 .box {
-  width: 42rem;
-  max-width: 42rem;
+  width: 62rem;
+  max-width: 62rem;
   background-color: var(--color-background-500);
   border-radius: 0.9rem;
   overflow: scroll;
@@ -248,6 +248,7 @@ body {
 /* ******* */
 
 .summary {
+  width: 100%;
   padding: 2.2rem 3.2rem 1.8rem 3.2rem;
   border-radius: 0.9rem;
   background-color: var(--color-background-100);
@@ -261,6 +262,7 @@ body {
 }
 
 .summary div {
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 2.4rem;
