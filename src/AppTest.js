@@ -95,6 +95,7 @@ export default function App() {
       <Main>
         <Box>
           {isLoading && <Loader />}
+          {!query && <SearchWelcome />}
           {!isLoading && !error && (
             <MovieList movies={movies} onSelectMovie={handleSelectMovie} />
           )}
@@ -124,6 +125,23 @@ export default function App() {
     </>
   );
 }
+
+const SearchWelcome = () => {
+  return (
+    <div
+      style={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <h1>Start Searching👀</h1>
+      <h1>...</h1>
+    </div>
+  );
+};
 
 const Search = ({ query, setQuery }) => {
   const inputEl = useRef(null);
