@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { tempMovieData, tempWatchedData } from "./data";
+import StarRating from "./StarRating";
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
@@ -147,12 +148,71 @@ const Movie = ({ movie, onSelectMovie }) => {
 };
 
 const MovieDetails = ({ selectedId, onCloseMovie }) => {
+  const [movie, setMovie] = useState({});
+  const [loading, setLoading] = useState(false);
+  const {
+    Title: title,
+    Year: year,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Director: director,
+    Genre: genre,
+  } = movie;
+  useEffect(() => {
+    const getMovieDetails = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch(
+          `http://www.omdbapi.com/?apikey=${KEY}&i=${selectedId}`
+        );
+        const data = await res.json();
+        setMovie(data);
+        setLoading(false);
+        // console.log(data);
+      } catch (err) {
+        console.error(err.message);
+        setLoading(false);
+      }
+    };
+    getMovieDetails();
+  }, [selectedId]);
   return (
     <div className="details">
-      <button className="btn-back" onClick={onCloseMovie}>
-        &larr;
-      </button>
-      {selectedId}{" "}
+      {!loading ? (
+        <>
+          <header>
+            <button className="btn-back" onClick={onCloseMovie}>
+              &larr;
+            </button>
+            <img src={poster} alt={`Poster of ${title}`} />
+            <div className="details-overview">
+              <h2>{title}</h2>
+              <p>
+                {released} &bull; {runtime}
+              </p>
+              <p>{genre}</p>
+              <p>
+                <span>⭐</span>
+                {imdbRating} IMDB Rating
+              </p>
+            </div>
+          </header>
+          <section>
+            <StarRating maxRating={10} size={26} />
+            <p>
+              <em>{plot}</em>
+            </p>
+            <p>Starring {actors}</p>
+            <p>Directed by {director}</p>
+          </section>
+        </>
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 };

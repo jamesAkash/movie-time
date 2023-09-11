@@ -23,15 +23,15 @@ StarRating.propTypes = {
   // maxRating: PropTypes.number.isRequired,
 };
 
-const StarRating = ({
-  maxRating: starCount = 6,
+function StarRating({
+  maxRating: starCount = 10,
   color = "#fcc419",
   size = "48",
   className = "",
   messages = [],
   defaultRating = 0,
   onSetRating,
-}) => {
+}) {
   const [rating, setRating] = useState(defaultRating);
   const [tempRating, setTempRating] = useState(0);
   function handleRating(rating) {
@@ -68,7 +68,7 @@ const StarRating = ({
       </p>
     </div>
   );
-};
+}
 
 const Star = ({ onRate, onHoverIn, onHoverOut, full, color, size }) => {
   return (
