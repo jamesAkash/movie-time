@@ -83,7 +83,8 @@ body {
 }
 
 .logo span {
-  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  display: block;
+  font-size: clamp(1.9rem, 3.5vw, 3rem);
 }
 
 .logo h1 {
@@ -204,7 +205,7 @@ body {
     max-width: 80rem;
     height: 100%;
   }
-  .list {
+  .list.list-movies {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -262,7 +263,7 @@ body {
 }
 
 .summary div {
-  width: 100%;
+  min-width: 100%;
   display: flex;
   align-items: center;
   gap: 2.4rem;
