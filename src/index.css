@@ -120,7 +120,7 @@ body {
 
 .num-results {
   justify-self: end;
-  font-size: 1.8rem;
+  font-size: clamp(1.4rem, 3.5vw, 1.8rem);
 }
 
 .btn-toggle {
@@ -194,7 +194,7 @@ body {
   gap: 0.8rem;
 }
 
-@media (max-width: 691px) {
+@media (max-width: 850px) {
   .main {
     flex-direction: column;
     gap: 2.4rem;
@@ -211,15 +211,16 @@ body {
     grid-template-columns: repeat(2, 1fr);
   }
   .nav-bar {
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 1fr 2fr 1fr;
+    gap: 10px;
   }
-  .num-results {
+  /* .num-results {
     display: none;
-  }
+  } */
 }
 
-@media (max-width: 550px) {
-  .list {
+@media (max-width: 650px) {
+  .list.list.list-movies {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr;
@@ -289,7 +290,7 @@ body {
 }
 
 .details section {
-  padding: 4rem;
+  padding: 4rem 2rem;
   display: flex;
   flex-direction: column;
   gap: 1.6rem;

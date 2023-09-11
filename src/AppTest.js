@@ -12,7 +12,7 @@ export default function App() {
   const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("avatar");
   const [selectedId, setSelectedId] = useState(null);
 
   function handleSelectMovie(id) {
@@ -276,6 +276,7 @@ const MovieDetails = ({ selectedId, onCloseMovie, onAddWatched, watched }) => {
             <div className="rating">
               {!isWatched ? (
                 <>
+                  <h1>Give Your Rating</h1>
                   <StarRating
                     maxRating={10}
                     size={26}
@@ -406,7 +407,7 @@ const Logo = () => {
 const NumResults = ({ num }) => {
   return (
     <p className="num-results">
-      Found <strong>{num}</strong> results
+      <strong>{num}</strong> results
     </p>
   );
 };
