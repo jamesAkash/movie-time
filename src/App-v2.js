@@ -1,25 +1,21 @@
 import { useEffect, useRef, useState } from "react";
 // import { tempMovieData, tempWatchedData } from "./data";
 import StarRating from "./StarRating";
+import { useMovies } from "./useMovies";
+import { useLocalStorageState } from "./useLocalStorageState";
+
+const KEY = "7bc7249b";
 
 const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const KEY = "7bc7249b";
-
 export default function App() {
-  const [movies, setMovies] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
   const [query, setQuery] = useState("");
   const [selectedId, setSelectedId] = useState(null);
-  // const [watched, setWatched] = useState([]);
-  const [watched, setWatched] = useState(() => {
-    const storedValue = localStorage.getItem("watched")
-      ? JSON.parse(localStorage.getItem("watched"))
-      : [];
-    return storedValue;
-  });
+
+  //custom Hook
+  const { movies, isLoading, error } = useMovies(query);
+  const [watched, setWatched] = useLocalStorageState([], "watched");
 
   function handleSelectMovie(id) {
     setSelectedId((selectedId) => (id === selectedId ? null : id));
@@ -37,54 +33,8 @@ export default function App() {
     const newList = watched.filter((movie) => movie.imdbID !== id);
     setWatched(newList);
     //TESTING
-    localStorage.setItem("watched", JSON.stringify(newList));
+    setWatched(newList, "watched");
   }
-
-  useEffect(() => {
-    const controller = new AbortController();
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        setError("");
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-          {
-            signal: controller.signal,
-          }
-        );
-        if (!res.ok) throw new Error("Something went wrong!!");
-        const data = await res.json();
-        setMovies(data.Search);
-
-        if (data.Response === "False") throw new Error("Movie Not Found");
-        setError("");
-        // setIsLoading(false);
-      } catch (err) {
-        if (err.name !== "AbortError") {
-          setError(err.message);
-          console.error(err.message);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    if (query.length < 2) {
-      setMovies([]);
-      setError("");
-      return;
-    }
-    handleCloseMovie();
-    fetchData();
-
-    return () => {
-      controller.abort();
-    };
-  }, [query]);
-
-  //LOCAL STORAGE
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
 
   return (
     <>
@@ -184,7 +134,7 @@ const Loader = () => {
 const Box = ({ children }) => {
   const [isOpen, setIsOpen] = useState(true);
   return (
-    <div className="box">
+    <div className={`${isOpen ? "box" : "box hide"}`}>
       <button className="btn-toggle" onClick={() => setIsOpen((open) => !open)}>
         {isOpen ? "–" : "+"}
       </button>

@@ -58,6 +58,10 @@ body {
   position: relative;
 }
 
+.box.hide {
+  height: 10vh;
+}
+
 .loader {
   text-align: center;
   text-transform: uppercase;
